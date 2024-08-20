@@ -1,6 +1,5 @@
 package com.mindhub.AppSprint2.models;
 
-import com.mindhub.AppSprint2.dtos.UserDto;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -19,16 +18,19 @@ public class UserEntity {
 
     private String email;
 
+    private RolEnum rol;
+
     @OneToMany( mappedBy = "userEntity", fetch = FetchType.LAZY)
     private Set<Task> tasks = new HashSet<>();
 
     public UserEntity() {
     }
 
-    public UserEntity(String username, String password, String email) {
+    public UserEntity(String username, String password, String email, RolEnum rol) {
         this.username = username;
         this.password = password;
         this.email = email;
+        this.rol = rol;
     }
 
     public String getPassword() {
@@ -72,4 +74,11 @@ public class UserEntity {
         tasks.add(task);
     }
 
+    public RolEnum getRol() {
+        return rol;
+    }
+
+    public void setRol(RolEnum rol) {
+        this.rol = rol;
+    }
 }

@@ -1,18 +1,19 @@
 package com.mindhub.AppSprint2.services;
 
-import com.mindhub.AppSprint2.dtos.TaskDto;
-import com.mindhub.AppSprint2.dtos.UserDto;
-import com.mindhub.AppSprint2.models.Task;
+import com.mindhub.AppSprint2.dtos.TaskRequestDto;
+import com.mindhub.AppSprint2.dtos.TaskResponseDto;
 
 public interface TaskService {
 
-    TaskDto findById(Long id);
+    TaskResponseDto findById(Long id);
+
+    TaskResponseDto update(Long id, TaskRequestDto taskDto);
 
     boolean existsById(Long id);
 
-    long countUsers();
+    long countTask();
 
     void deleteById(Long id);
 
-    TaskDto save(TaskDto dto);
+    TaskResponseDto save(TaskRequestDto dto);
 }

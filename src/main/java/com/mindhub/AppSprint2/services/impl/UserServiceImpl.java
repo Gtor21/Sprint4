@@ -1,10 +1,14 @@
 package com.mindhub.AppSprint2.services.impl;
 
+import com.mindhub.AppSprint2.dtos.TaskResponseDto;
 import com.mindhub.AppSprint2.dtos.UserDto;
+import com.mindhub.AppSprint2.exeptions.NotFoundUserException;
+import com.mindhub.AppSprint2.mappers.UserMapper;
 import com.mindhub.AppSprint2.models.UserEntity;
 import com.mindhub.AppSprint2.repositories.UserRepository;
 import com.mindhub.AppSprint2.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -13,11 +17,29 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserRepository userRepository;
 
+
+    @Autowired
+    private UserMapper userMapper;
+
     @Override
     public UserDto findById(Long id) {
+        String errorMessage = String.format("El Usuario N° %d no fue encontrado, por favor verifica ID del usuario", id);
         return userRepository.findById(id)
-                .map(this::convertToDTO)
-                .orElse(null);
+                .map(userMapper::toUserDto)
+                .orElseThrow(() -> new NotFoundUserException(errorMessage));
+    }
+
+    @Override
+    public UserDto update(Long id, UserDto dto) {
+        UserEntity entity = userRepository.findById(id)
+                .orElseThrow(() -> new NotFoundUserException(String.format("El Usuario N° %d no fue encontrado, por favor verifica ID del usuario", id)));
+
+        entity.setUsername(dto.getUsername());
+        entity.setEmail(dto.getEmail());
+        entity.setPassword(dto.getPassword());
+        UserEntity updatedUser = userRepository.save(entity);
+
+        return userMapper.toUserDto(updatedUser);
     }
 
     @Override
@@ -32,31 +54,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteById(Long id) {
-        userRepository.deleteById(id);
+        try {
+            userRepository.deleteById(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new NotFoundUserException("No se pudo eliminar el usuario porque está asociado a una o más tareas.");
+        }
     }
 
     @Override
-    public UserDto save(UserDto userDTO) {
-        UserEntity userEntity = convertToEntity(userDTO);
-        userEntity = userRepository.save(userEntity);
-        return convertToDTO(userEntity);
+    public UserDto save(UserDto dto) {
+        UserEntity entity = userMapper.toUser(dto);
+        entity = userRepository.save(entity);
+        return userMapper.toUserDto(entity);
     }
 
-    // Métodos auxiliares para conversiones
-    private UserDto convertToDTO(UserEntity userEntity) {
-        UserDto userDTO = new UserDto();
-        userDTO.setId(userEntity.getId());
-        userDTO.setUsername(userEntity.getUsername());
-        userDTO.setPassword(userEntity.getPassword());
-        userDTO.setEmail(userEntity.getEmail());
-        return userDTO;
-    }
-    private UserEntity convertToEntity(UserDto userDTO) {
-        UserEntity userEntity = new UserEntity();
-        userEntity.setUsername(userDTO.getUsername());
-        userEntity.setId(userDTO.getId());
-        userEntity.setPassword(userDTO.getPassword());
-        userEntity.setEmail(userDTO.getEmail());
-        return userEntity;
-    }
 }
