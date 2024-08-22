@@ -1,17 +1,13 @@
 package com.mindhub.AppSprint2.controllers;
 
-import com.mindhub.AppSprint2.dtos.TaskRequestDto;
-import com.mindhub.AppSprint2.dtos.TaskResponseDto;
-import com.mindhub.AppSprint2.dtos.UserDto;
-import com.mindhub.AppSprint2.models.UserEntity;
+import com.mindhub.AppSprint2.dtos.UserRequestDto;
+import com.mindhub.AppSprint2.dtos.UserResponseDto;
 import com.mindhub.AppSprint2.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,8 +21,8 @@ public class UserController {
     @Operation(summary = "Obtiene Usuario por ID", description = "Retorna Usuario del ID especificado")
     @GetMapping("/{id}")
     @SecurityRequirement(name = "bearerAuth")
-    public ResponseEntity<UserDto> getUsuerById(@PathVariable Long id){
-        UserDto dto = userService.findById(id);
+    public ResponseEntity<UserResponseDto> getUsuerById(@PathVariable Long id){
+        UserResponseDto dto = userService.findById(id);
         return dto != null ? ResponseEntity.ok(dto) : ResponseEntity.notFound().build();
     }
 
@@ -58,15 +54,15 @@ public class UserController {
     @Operation(summary = "Actualizar usuario por ID", description = "Actualiza un usuario existente con los detalles proporcionados y devuelve usuario actualizado.")
     @PutMapping("/{id}")
     @SecurityRequirement(name = "bearerAuth")
-    public ResponseEntity<UserDto> updateUser(@PathVariable Long id, @RequestBody UserDto dto) {
-        UserDto updatedUser = userService.update(id, dto);
+    public ResponseEntity<UserResponseDto> updateUser(@PathVariable Long id, @RequestBody UserRequestDto dto) {
+        UserResponseDto updatedUser = userService.update(id, dto);
         return ResponseEntity.ok(updatedUser);
     }
 
     @Operation(summary = "Crear tarea por ID", description = "Crea una nueva tarea.")
     @PostMapping
     @SecurityRequirement(name = "bearerAuth")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto taskDto) {
+    public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto taskDto) {
         return ResponseEntity.ok(userService.save(taskDto));
     }
 

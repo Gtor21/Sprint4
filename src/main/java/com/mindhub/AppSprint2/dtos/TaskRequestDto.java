@@ -18,7 +18,7 @@ public class TaskRequestDto {
     private TaskStatus status;
 
     @Schema(description = "Usuario realiza la tarea")
-    private UserDto user;
+    private UserRequestDto user;
 
     public TaskRequestDto() {
     }
@@ -54,11 +54,11 @@ public class TaskRequestDto {
         this.status = status;
     }
 
-    public UserDto getUser() {
+    public UserRequestDto getUser() {
         return user;
     }
 
-    public void setUser(UserDto user) {
+    public void setUser(UserRequestDto user) {
         this.user = user;
     }
 }

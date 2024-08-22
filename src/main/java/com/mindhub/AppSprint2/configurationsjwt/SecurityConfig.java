@@ -3,6 +3,7 @@ package com.mindhub.AppSprint2.configurationsjwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -40,8 +41,9 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                                 .requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/api/user/**").hasAnyAuthority("ADMIN", "USER")
                                 .requestMatchers("/api/user/**").hasAnyAuthority("ADMIN")
-                                .requestMatchers("/api/task/**").hasAnyAuthority("ADMIN")
+                                .requestMatchers("/api/task/**").hasAnyAuthority("ADMIN", "USER")
                                 .anyRequest().denyAll()
                 )
                 .formLogin(AbstractHttpConfigurer::disable)

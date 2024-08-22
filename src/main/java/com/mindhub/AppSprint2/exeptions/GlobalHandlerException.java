@@ -18,4 +18,9 @@ public class GlobalHandlerException {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(UnauthorizedAccessException.class)
+    public ResponseEntity<String> handleResourceNotFoundExeption(UnauthorizedAccessException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
 }

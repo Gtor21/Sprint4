@@ -1,6 +1,7 @@
 package com.mindhub.AppSprint2.mappers;
 
-import com.mindhub.AppSprint2.dtos.UserDto;
+import com.mindhub.AppSprint2.dtos.UserRequestDto;
+import com.mindhub.AppSprint2.dtos.UserResponseDto;
 import com.mindhub.AppSprint2.models.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -12,11 +13,11 @@ public class UserMapper {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public UserDto toUserDto(UserEntity user) {
+    public UserRequestDto toUserDto(UserEntity user) {
         if (user == null) {
             return null;
         }
-        UserDto dto = new UserDto();
+        UserRequestDto dto = new UserRequestDto();
         dto.setId(user.getId());
         dto.setUsername(user.getUsername());
         dto.setEmail(user.getEmail());
@@ -25,7 +26,20 @@ public class UserMapper {
         return dto;
     }
 
-    public UserEntity toUser(UserDto userDto ) {
+    public UserResponseDto toUserResponseDto(UserEntity user) {
+        if (user == null) {
+            return null;
+        }
+
+        UserResponseDto dto = new UserResponseDto();
+        dto.setId(user.getId());
+        dto.setUsername(user.getUsername());
+        dto.setEmail(user.getEmail());
+        dto.setRol(user.getRol());
+        return dto;
+    }
+
+    public UserEntity toUser(UserRequestDto userDto ) {
         if (userDto == null) {
             return null;
         }

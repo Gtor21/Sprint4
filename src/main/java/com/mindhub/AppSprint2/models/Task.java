@@ -20,7 +20,7 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private UserEntity userEntity;
 
     public Task() {

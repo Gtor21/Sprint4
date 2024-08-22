@@ -10,6 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
@@ -17,6 +21,10 @@ public class Utils {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserRepository userRepository;
+
     @Bean
     public CommandLineRunner initData(UserRepository userRepository, TaskRepository taskRepository){
         return args -> {
@@ -28,5 +36,13 @@ public class Utils {
             user.addTask(task);
             taskRepository.save(task);
         };
+    }
+
+    public static UserDetails getCurrentUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+            return (UserDetails) authentication.getPrincipal();
+        }
+        throw new UsernameNotFoundException("No hay usuario autenticado en la sesión");
     }
 }

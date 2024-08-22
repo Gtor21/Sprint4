@@ -1,21 +1,24 @@
 package com.mindhub.AppSprint2.dtos;
 
 import com.mindhub.AppSprint2.models.RolEnum;
-import com.mindhub.AppSprint2.models.UserEntity;
 
-public class UserDto {
+public class UserResponseDto {
 
     private Long id;
 
     private String username;
 
-    private String password;
-
     private String email;
 
     private RolEnum rol;
 
-    public UserDto() {
+    public UserResponseDto() {
+    }
+
+    public UserResponseDto(Long id, String username, String email) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
     }
 
     public Long getId() {
@@ -32,14 +35,6 @@ public class UserDto {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getEmail() {
