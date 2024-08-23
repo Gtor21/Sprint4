@@ -1,4 +1,4 @@
-package com.mindhub.AppSprint2;
+package com.mindhub.AppSprint2.services;
 
 import com.mindhub.AppSprint2.dtos.TaskRequestDto;
 import com.mindhub.AppSprint2.dtos.TaskResponseDto;
@@ -6,7 +6,6 @@ import com.mindhub.AppSprint2.exeptions.NotFoundTaskException;
 import com.mindhub.AppSprint2.mappers.TaskMapper;
 import com.mindhub.AppSprint2.models.Task;
 import com.mindhub.AppSprint2.repositories.TaskRepository;
-import com.mindhub.AppSprint2.services.UserService;
 import com.mindhub.AppSprint2.services.impl.TaskServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

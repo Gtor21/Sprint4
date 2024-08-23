@@ -1,4 +1,4 @@
-package com.mindhub.AppSprint2;
+package com.mindhub.AppSprint2.services;
 
 import com.mindhub.AppSprint2.dtos.UserRequestDto;
 import com.mindhub.AppSprint2.dtos.UserResponseDto;
